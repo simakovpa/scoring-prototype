@@ -1,62 +1,62 @@
 # Dependencies
 node_modules/
 
-# Build artifacts
+# Build outputs
 dist/
 build/
-*.js.map
+coverage/
+htmlcov/
 
-# Environment
+# Environment variables
 .env
 .env.local
-*.env.*
-
-# Editors
-.vscode/
-.idea/
-
-# Logs
-*.log
-
-# Temp files
-*.tmp
-*.swp
+.env.*
 
 # Python
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
-
-# Compiled
-*.o
-*.obj
-*.so
-*.dll
-*.exe
-
-# Coverage
-coverage/
-htmlcov/
-.coverage
-
-# MyPy
-.mypy_cache/
-
-# PyTest
-.pytest_cache/
-
-# Distribution / packaging
 .Python
-*.egg-info/
-.installed.cfg
-*.egg
+env/
+venv/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.log
+.git/
+.mypy_cache/
+.pytest_cache/
+.hypothesis/
 
-# OS generated files
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*.tmp
+
+# System
 .DS_Store
 Thumbs.db
 
-# Compressed
+# Compiled and binary
+*.class
+*.o
+*.obj
+*.exe
+*.dll
+*.so
+*.a
+*.out
+*.tar.gz
 *.zip
 *.gz
 *.tar
@@ -75,7 +75,3 @@ Thumbs.db
 *.Z
 *.lz
 *.lzo
-*.tar.gz
-*.tar.bz2
-*.tar.xz
-*.tar.zst
