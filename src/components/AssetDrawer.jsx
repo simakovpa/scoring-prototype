@@ -1,23 +1,22 @@
 import React, { useState } from 'react';
 import {
-  Drawer, Typography, Tag, Badge, Divider, Button, Space,
+  Drawer, Tag, Badge, Divider, Button, Space,
   Modal, Select, InputNumber, Form, List, Tooltip, Alert,
 } from 'antd';
 import {
-  WarningOutlined, CheckCircleOutlined, ExclamationCircleOutlined,
-  ClockCircleOutlined, ToolOutlined, ThunderboltOutlined,
+  WarningOutlined, CheckCircleOutlined,
+  ClockCircleOutlined, ThunderboltOutlined,
 } from '@ant-design/icons';
 import { ScoreDecomposition } from './ScoreBar';
-import { PRIORITY_CONFIG, STATUS_CONFIG, SCORING_CONFIG, SEVERITY_LABELS } from '../data/mockData';
+import {
+  PRIORITY_CONFIG, STATUS_CONFIG, SCORING_CONFIG,
+  SEVERITY_LABELS, DEFECT_TYPES,
+} from '../data/mockData';
 
-const { Title, Text } = Typography;
+const DEFECT_TYPES_MAP = Object.fromEntries(DEFECT_TYPES.map(d => [d.id, d]));
 
-const REPAIR_COLORS = {
-  КР: '#cf1322', СР: '#fa8c16', ТР: '#1677ff', ТО: '#52c41a',
-};
-
+const REPAIR_COLORS = { КР: '#cf1322', СР: '#fa8c16', ТР: '#1677ff', ТО: '#52c41a' };
 const SEVERITY_TAG_COLOR = { 1: 'default', 2: 'warning', 3: 'error' };
-
 const POSTPONE_REASONS = [
   'Нет финансирования в текущем году',
   'Ресурсы подрядчика недоступны',
@@ -79,7 +78,6 @@ export default function AssetDrawer({ asset, open, onClose, onAddToPlan, onPostp
         }
         styles={{ body: { padding: '16px 24px' } }}
       >
-        {/* Блокирующий дефект */}
         {asset.hasBlocking && (
           <Alert
             type="error"
@@ -91,7 +89,6 @@ export default function AssetDrawer({ asset, open, onClose, onAddToPlan, onPostp
           />
         )}
 
-        {/* Итоговый балл */}
         <div style={{
           display: 'flex', alignItems: 'center', gap: 16,
           padding: '12px 16px', borderRadius: 8,
@@ -129,7 +126,6 @@ export default function AssetDrawer({ asset, open, onClose, onAddToPlan, onPostp
           </div>
         </div>
 
-        {/* Декомпозиция балла */}
         <Divider orientation="left" orientationMargin={0} style={{ fontSize: 12, color: '#8c8c8c' }}>
           Декомпозиция балла
         </Divider>
@@ -138,7 +134,6 @@ export default function AssetDrawer({ asset, open, onClose, onAddToPlan, onPostp
           weights={{ wD: SCORING_CONFIG.wD, wW: SCORING_CONFIG.wW, wC: SCORING_CONFIG.wC, wT: SCORING_CONFIG.wT }}
         />
 
-        {/* Рекомендация вида ремонта */}
         <Divider orientation="left" orientationMargin={0} style={{ fontSize: 12, color: '#8c8c8c', marginTop: 20 }}>
           Рекомендация вида ремонта
         </Divider>
@@ -161,7 +156,6 @@ export default function AssetDrawer({ asset, open, onClose, onAddToPlan, onPostp
           </div>
         </div>
 
-        {/* Список дефектов */}
         <Divider orientation="left" orientationMargin={0} style={{ fontSize: 12, color: '#8c8c8c', marginTop: 20 }}>
           Открытые дефекты ({asset.defects.length})
         </Divider>
@@ -205,7 +199,6 @@ export default function AssetDrawer({ asset, open, onClose, onAddToPlan, onPostp
           />
         )}
 
-        {/* Результаты испытаний */}
         {asset.test_results && asset.test_results.length > 0 && (
           <>
             <Divider orientation="left" orientationMargin={0} style={{ fontSize: 12, color: '#8c8c8c', marginTop: 12 }}>
@@ -223,15 +216,9 @@ export default function AssetDrawer({ asset, open, onClose, onAddToPlan, onPostp
                     <div style={{ flex: 1 }}>
                       <div style={{ fontSize: 12, color: '#262626', marginBottom: 2 }}>{t.param}</div>
                       <div style={{ fontSize: 11 }}>
-                        <span style={{ color: bad ? '#cf1322' : '#52c41a', fontWeight: 600 }}>
-                          {t.measured}
-                        </span>
+                        <span style={{ color: bad ? '#cf1322' : '#52c41a', fontWeight: 600 }}>{t.measured}</span>
                         <span style={{ color: '#8c8c8c' }}> / норма {t.norm}</span>
-                        {bad && (
-                          <Tag color="error" style={{ marginLeft: 8, fontSize: 10 }}>
-                            откл. {devPct}%
-                          </Tag>
-                        )}
+                        {bad && <Tag color="error" style={{ marginLeft: 8, fontSize: 10 }}>откл. {devPct}%</Tag>}
                       </div>
                     </div>
                   </List.Item>
@@ -242,7 +229,6 @@ export default function AssetDrawer({ asset, open, onClose, onAddToPlan, onPostp
         )}
       </Drawer>
 
-      {/* Модалка «Отложить» */}
       <Modal
         title={<><ClockCircleOutlined style={{ marginRight: 8 }} />Отложить объект</>}
         open={postponeModal}
@@ -263,7 +249,3 @@ export default function AssetDrawer({ asset, open, onClose, onAddToPlan, onPostp
     </>
   );
 }
-
-// Локальная ссылка на типы дефектов (чтобы не импортировать весь файл)
-import { DEFECT_TYPES } from '../data/mockData';
-const DEFECT_TYPES_MAP = Object.fromEntries(DEFECT_TYPES.map(d => [d.id, d]));
